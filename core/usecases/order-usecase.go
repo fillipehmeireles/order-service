@@ -1,6 +1,8 @@
 package usecases
 
 import (
+	"errors"
+
 	"github.com/fillipehmeireles/order-service/core/domain/order"
 	"github.com/fillipehmeireles/order-service/core/domain/order/ports"
 	"github.com/fillipehmeireles/order-service/pkg/handlers/order/dto"
@@ -17,7 +19,7 @@ type OrderUseCase struct {
 func (oUC *OrderUseCase) Create(newOrder dto.CreateOrderRequestDto) error {
 	_, err := oUC.userRepo.GetOne(newOrder.UserID)
 	if err != nil {
-		return err
+		return errors.New("user not found")
 	}
 	var order order.Order
 

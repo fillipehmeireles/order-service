@@ -28,7 +28,7 @@ func NewOrderHandler(orderUseCase ports.OrderUseCase, ws *restful.WebService) *O
 	ws.Route(ws.GET("/orders").To(orderHandler.GetAll))
 	ws.Route(ws.GET(fmt.Sprintf("orders/{%s}", ORDER_ID_PARAM)).To(orderHandler.GetOne))
 	ws.Route(ws.GET(fmt.Sprintf("orders/user/{%s}", USER_ID_PARAM)).To(orderHandler.GetByUser))
-	ws.Route(ws.DELETE(fmt.Sprintf("orders/{%s}", USER_ID_PARAM)).To(orderHandler.Delete))
+	ws.Route(ws.DELETE(fmt.Sprintf("orders/{%s}", ORDER_ID_PARAM)).To(orderHandler.Delete))
 
 	return orderHandler
 }
@@ -98,7 +98,7 @@ func (oH *OrderHandler) GetByUser(req *restful.Request, resp *restful.Response) 
 }
 
 func (oH *OrderHandler) Delete(req *restful.Request, resp *restful.Response) {
-	orderID := req.PathParameter(USER_ID_PARAM)
+	orderID := req.PathParameter(ORDER_ID_PARAM)
 	if orderID == "" {
 		resp.WriteError(http.StatusBadRequest, resp.WriteAsJson(handlers.FailResponse{ErrorReason: handlers.ErrNoUserIDProvided.Error()}))
 		return
@@ -114,5 +114,5 @@ func (oH *OrderHandler) Delete(req *restful.Request, resp *restful.Response) {
 		resp.WriteError(http.StatusInternalServerError, resp.WriteAsJson(handlers.FailResponse{ErrorReason: err.Error()}))
 		return
 	}
-	resp.WriteAsJson(handlers.SuccessResponse{Data: handlers.OKOrderCreated})
+	resp.WriteAsJson(handlers.SuccessResponse{Data: handlers.OKOrderDeleted})
 }
