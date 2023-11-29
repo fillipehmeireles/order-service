@@ -8,7 +8,8 @@ import (
 	"github.com/emicklei/go-restful"
 	"github.com/fillipehmeireles/order-service/adapters/pg"
 	"github.com/fillipehmeireles/order-service/adapters/repositories"
-	"github.com/fillipehmeireles/order-service/core/usescases"
+	"github.com/fillipehmeireles/order-service/core/usecases"
+
 	"github.com/fillipehmeireles/order-service/internal/config"
 	"github.com/fillipehmeireles/order-service/pkg/handlers/order/api"
 	userRepositories "github.com/fillipehmeireles/user-service/adapters/repositories"
@@ -42,7 +43,7 @@ func main() {
 	pgInstance.Migrate()
 	orderRepo := repositories.NewOrderRepository(pgInstance.DB)
 	userRepo := userRepositories.NewUserRepository(pgInstance.DB)
-	orderUseCase := usescases.NewOrderUseCase(orderRepo, userRepo)
+	orderUseCase := usecases.NewOrderUseCase(orderRepo, userRepo)
 	ws := new(restful.WebService)
 	ws = ws.Path("/api")
 

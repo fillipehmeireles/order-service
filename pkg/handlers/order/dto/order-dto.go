@@ -9,7 +9,7 @@ type orderRequestDto struct {
 	OrderType int     `json:"order_type"`
 }
 
-type orderResponseDto struct {
+type OrderResponseDto struct {
 	ID        int     `json:"id"`
 	UserID    int     `json:"user_id"`
 	Pair      string  `json:"pair"`
@@ -22,7 +22,7 @@ type requestDto struct {
 	orderRequestDto
 }
 type responseManyOrdersDto struct {
-	Orders []orderResponseDto `json:"orders"`
+	Orders []OrderResponseDto `json:"orders"`
 }
 
 type (
@@ -33,7 +33,7 @@ type (
 		responseManyOrdersDto
 	}
 	GetOneResponseDto struct {
-		orderResponseDto
+		OrderResponseDto
 	}
 	GetByUserResponseDto struct {
 		responseManyOrdersDto
@@ -58,7 +58,7 @@ func (gODto *GetOneResponseDto) FromDomain(orderDomain order.Order) {
 
 func (gDto *responseManyOrdersDto) FromDomain(ordersDomain order.Orders) {
 	for _, o := range ordersDomain {
-		gDto.Orders = append(gDto.Orders, orderResponseDto{
+		gDto.Orders = append(gDto.Orders, OrderResponseDto{
 			ID:        o.ID,
 			UserID:    o.UserID,
 			Pair:      o.Pair,

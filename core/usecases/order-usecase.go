@@ -1,13 +1,10 @@
-package usescases
+package usecases
 
 import (
-	"encoding/base64"
-	"fmt"
-	"time"
-
 	"github.com/fillipehmeireles/order-service/core/domain/order"
 	"github.com/fillipehmeireles/order-service/core/domain/order/ports"
 	"github.com/fillipehmeireles/order-service/pkg/handlers/order/dto"
+	"github.com/fillipehmeireles/order-service/pkg/utils"
 	userPorts "github.com/fillipehmeireles/user-service/core/domain/user/ports"
 )
 
@@ -25,9 +22,8 @@ func (oUC *OrderUseCase) Create(newOrder dto.CreateOrderRequestDto) error {
 	var order order.Order
 
 	newOrder.ToDomain(&order)
-	t := time.Now().Format(time.RFC850)
-	tokenPair := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%d%f%d%d%s", order.UserID, order.Amount, order.Direction, order.OrderType, t)))
 
+	tokenPair := utils.GenerateTokenPairWithOrderData(newOrder)
 	order.Pair = tokenPair
 	if err := oUC.orderRepo.Create(order); err != nil {
 		return err
